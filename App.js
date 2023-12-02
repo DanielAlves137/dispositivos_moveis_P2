@@ -1,20 +1,57 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+
+import Tecnologia from './src/pages/Tecnologia';
+import Limpeza from './src/pages/Limpeza';
+import Escritorio from './src/pages/Escritorio';
+
+
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const icons = {
+  Tecnologia:{
+    name: 'desktop',
+  },
+  Limpeza:{
+    name: 'water',
+  },
+  Escritorio:{
+    name: 'create',
+  }
+}
+
+function Tabs(){
+  return(
+      <Tab.Navigator
+      screenOptions={ ({route}) => ({
+        tabBarIcon: ({ color, size}) => {
+          const { name } = icons[route.name];
+          return <Icon name={name} color={color} size={size} />
+        } 
+      }) }
+      
+      >
+        <Tab.Screen name='Tecnologia' component={Tecnologia} />
+        <Tab.Screen name='Limpeza' component={Limpeza} />
+        <Tab.Screen name='Escritorio' component={Escritorio} />
+      </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default function App(){
+  return(
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Tecnologia" component={Tabs} options={{ headerShown: false }} />
+        <Stack.Screen name="Limpeza" component={Limpeza} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
